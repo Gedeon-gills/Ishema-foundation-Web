@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ishema Foundation</title>
+    <link rel="stylesheet" href="homepage.css" />
+</head>
+<body>
+
+
+    <header class="navbar">
+        <div class="logo">Ifound</div>
+        <nav class="nav-links">
+            <a class="active" href="homepage.html" > Home</a>
+            <a href="campaigns.html"> Campaigns</a>
+            <a href="about.html"> About</a>
+            <a href="blog.html"> Blog</a>
+            <a href="contact.html"> Contact</a>
+        </nav>
+        <button class="btn-primary">Donate </button>
+        <div class="menu" id="menu">
+            ☰
+        </div>
+        <div class="close" id="close">
+            &times;
+        </div>
+    </header>
+
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Justice <br>begins where <br>inequality <br>ends</h1>
+            <p>We’re building a world where everyone has <br>the power to shape their lives.</p>
+            <button class="btn-dark">Donate Now</button>
+        </div>
+        <div class="hero-img">
+            <img src="" alt="Hero Image" />
+        </div>
+    </section>
+
+
+    <section class="featured">
+        <h4>Our Mission: </h4>
+        <h2>Making a Difference </h4>
+        <p>Every story of change starts with a single step. We are dedicated to providing<br> resources and support to communities in need, focusing on education, health, and sustainable development.</p>
+        <div class="features">
+            <div class="feature-box"> <h3>Free Access</h3> <p>Helping communities get services.</p></div>
+            <div class="feature-box"> <h3>Locals for Locals</h3> <p>Projects led by local changemakers.</p></div>
+            <div class="feature-box"> <h3>Real Impact</h3> <p>Transparent measurable outcomes.</p></div>
+            <div class="feature-box"> <h3>Safety Net</h3> <p>Protecting the most vulnerable.</p></div>
+        </div>
+    </section>
+
+    
+    <section class="campaigns" id="campaigns">
+        <h2>Featured Campaigns</h2>
+        <div class="campaign-list">
+            <div class="campaign-card">
+                <img src="/mnt/data/web.jpg" />
+                <h4>Youth In Action</h4>
+                <p>Supporting programs for children.</p>
+                <button class="btn-primary">Donate</button>
+            </div>
+            <div class="campaign-card">
+                <img src="/mnt/data/web.jpg" />
+                <h4>Youth In Action</h4>
+                <p>Supporting programs for children.</p>
+                <button class="btn-primary">Donate</button>
+            </div>
+            <div class="campaign-card">
+                <img src="/mnt/data/web.jpg" />
+                <h4>Youth In Action</h4>
+                <p>Supporting programs for children.</p>
+                <button class="btn-primary">Donate</button>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer">
+        <p>© 2025 ishema Foundation — All Rights Reserved</p>
+    </footer>
+
+
+    <script type="module">
+        const navBar = document.querySelector(".navbar");
+        document.getElementById("menu").onclick = () => {
+            navBar.classList.add("nav-open");
+        };
+
+        document.getElementById("close").onclick = () => {
+            navBar.classList.remove("nav-open");
+        };
+    </script>
+</body>
+</html>
