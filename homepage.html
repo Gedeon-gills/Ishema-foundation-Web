@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="homepage.css" />
 </head>
 <body>
-
-
     <header class="navbar">
         <div class="logo">Ifound</div>
         <nav class="nav-links">
@@ -27,7 +25,6 @@
         </div>
     </header>
 
-
     <section class="hero">
         <div class="hero-text">
             <h1>Justice <br>begins where <br>inequality <br>ends</h1>
@@ -35,10 +32,9 @@
             <button class="btn-dark">Donate Now</button>
         </div>
         <div class="hero-img">
-            <img src="" alt="Hero Image" />
+            <img src="https://github.com/Gedeon-gills/Ishema-foundation-Web/blob/main/images/bigstock-Group-Of-Children-Playing-In-P-13910942.jpeg?raw=true" alt="Hero Image" />
         </div>
     </section>
-
 
     <section class="featured">
         <h4>Our Mission: </h4>
@@ -52,30 +48,68 @@
         </div>
     </section>
 
-    
     <section class="campaigns" id="campaigns">
         <h2>Featured Campaigns</h2>
         <div class="campaign-list">
             <div class="campaign-card">
                 <img src="/mnt/data/web.jpg" />
-                <h4>Youth In Action</h4>
-                <p>Supporting programs for children.</p>
+                <h4>Education for All</h4>
+                <p>Providing children in remote areas with access to quality education and learning resources.</p>
                 <button class="btn-primary">Donate</button>
             </div>
             <div class="campaign-card">
                 <img src="/mnt/data/web.jpg" />
-                <h4>Youth In Action</h4>
-                <p>Supporting programs for children.</p>
+                <h4>Healthcare Access</h4>
+                <p>Delivering medical aid and health education to underserved communities.</p>
                 <button class="btn-primary">Donate</button>
             </div>
             <div class="campaign-card">
                 <img src="/mnt/data/web.jpg" />
-                <h4>Youth In Action</h4>
-                <p>Supporting programs for children.</p>
+                <h4>Sustainable Development</h4>
+                <p>Supporting projects that promote clean energy, clean water, and environmental sustainability.</p>
                 <button class="btn-primary">Donate</button>
             </div>
         </div>
     </section>
+
+    <!-- Donation Modal -->
+    <div class="donation-modal" id="donationModal">
+        <div class="donation-content">
+            <span class="close-donation" id="closeDonation">&times;</span>
+
+            <h2>Make a Donation</h2>
+            <p>Your support helps uplift communities through education, health, and development.</p>
+
+            <label>Full Name</label>
+            <input type="text" id="donorName" class="donation-input" placeholder="Enter your name" />
+
+            <label>Email Address</label>
+            <input type="email" id="donorEmail" class="donation-input" placeholder="Enter your email" />
+
+            <label>Choose Donation Amount</label>
+            <div class="amount-options">
+                <button class="amt" data-value="5">$5</button>
+                <button class="amt" data-value="10">$10</button>
+                <button class="amt" data-value="20">$20</button>
+                <button class="amt" data-value="50">$50</button>
+            </div>
+
+            <input type="number" id="customAmount" class="donation-input" placeholder="Or enter custom amount" />
+
+            <label>Select Payment Method</label>
+            <select id="paymentMethod" class="donation-input">
+                <option value="">Choose payment method</option>
+                <option value="MTN Mobile Money">MTN Mobile Money</option>
+                <option value="Airtel Money">Airtel Money</option>
+                <option value="Visa / Mastercard">Visa / Mastercard</option>
+                <option value="PayPal">PayPal</option>
+            </select>
+
+            <button class="donate-submit" id="submitDonation">Proceed to Payment</button>
+
+            <p class="success-msg" id="successMsg" style="display:none;">Thank you! Your donation details have been submitted.</p>
+        </div>
+    </div>
 
 
     <footer class="footer">
@@ -85,6 +119,7 @@
 
     <script type="module">
         const navBar = document.querySelector(".navbar");
+
         document.getElementById("menu").onclick = () => {
             navBar.classList.add("nav-open");
         };
@@ -92,6 +127,74 @@
         document.getElementById("close").onclick = () => {
             navBar.classList.remove("nav-open");
         };
+
+        const DonateBtn = document.querySelector(".btn-primary");
+        const donationModal = document.getElementById("donationModal");
+        const closeDonation = document.getElementById("closeDonation");
+        const amountButtons = document.querySelectorAll(".amt");
+        const customAmount = document.getElementById("customAmount");
+        const submitDonation = document.getElementById("submitDonation");
+        const successMsg = document.getElementById("successMsg");
+
+        const donorName = document.getElementById("donorName");
+        const donorEmail = document.getElementById("donorEmail");
+        const paymentMethod = document.getElementById("paymentMethod");
+
+        DonateBtn.onclick = () => {
+            donationModal.style.display = "flex";
+        };
+
+        closeDonation.onclick = () => {
+            donationModal.style.display = "none";
+        };
+
+        window.onclick = (e) => {
+            if (e.target === donationModal) {
+                donationModal.style.display = "none";
+            }
+        };
+
+        amountButtons.forEach(btn => {
+            btn.onclick = () => {
+                amountButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                customAmount.value = btn.dataset.value;
+            };
+        });
+
+        submitDonation.onclick = () => {
+            let amount = customAmount.value;
+
+            const name = donorName.value.trim();
+            const email = donorEmail.value.trim();
+            const method = paymentMethod.value;
+
+            if (!name || !email || !amount || !method) {
+                alert("Please fill all fields before proceeding.");
+                return;
+            }
+
+            successMsg.style.display = "block";
+
+            console.log({
+                name,
+                email,
+                amount,
+                method
+            });
+
+            setTimeout(() => {
+                successMsg.style.display = "none";
+                donorName.value = "";
+                donorEmail.value = "";
+                paymentMethod.value = "";
+                customAmount.value = "";
+                amountButtons.forEach(b => b.classList.remove("active"));
+
+                donationModal.style.display = "none";
+            }, 2000);
+        }; 
     </script>
 </body>
 </html>

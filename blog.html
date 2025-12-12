@@ -3,43 +3,215 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ishema Foundation</title>
-    <link rel="stylesheet" href="about.css" />
+    <title>Blog — Ishema Foundation</title>
+    <link rel="stylesheet" href="blog.css" />
 </head>
 <body>
-
 
     <header class="navbar">
         <div class="logo">Ifound</div>
         <nav class="nav-links">
-            <a href="homepage.html" > Home</a>
-            <a href="campaigns.html"> Campaigns</a>
-            <a href="about.html"> About</a>
-            <a class="active" href="blog.html"> Blog</a>
-            <a href="contact.html"> Contact</a>
+            <a href="homepage.html">Home</a>
+            <a href="campaigns.html">Campaigns</a>
+            <a href="about.html">About</a>
+            <a class="active" href="blog.html">Blog</a>
+            <a href="contact.html">Contact</a>
         </nav>
         <button class="btn-primary">Donate</button>
-        <div class="menu" id="menu">
-            ☰
-        </div>
-        <div class="close" id="close">
-            &times;
-        </div>
+        <div class="menu" id="menu">☰</div>
+        <div class="close" id="close">&times;</div>
     </header>
 
+    <main class="blog-main">
+        <section class="blog-hero">
+            <h1>Our Blog</h1>
+            <p>Read the latest news, stories of change, and updates from Ishema Foundation.</p>
+        </section>
+
+        <section class="blog-content">
+            <!-- Blog Post 1 -->
+            <article class="blog-card">
+                <h2>Empowering Communities Through Education</h2>
+                <p>Education is the foundation of growth. Discover how Ishema Foundation is helping children access quality education across Rwanda.</p>
+                <button class="read-more-btn" data-blog="education">Read More</button>
+            </article>
+
+            <!-- Blog Post 2 -->
+            <article class="blog-card">
+                <h2>Health Programs Making a Difference</h2>
+                <p>From medical camps to awareness programs, we are improving healthcare access for underserved communities.</p>
+                <button class="read-more-btn" data-blog="health">Read More</button>
+            </article>
+            <!--Blog Post 3-->
+            <article class="blog-card">
+                <h2>Sustainable Development Projects</h2>
+                <p>Learn about our sustainable farming, water, and environmental projects that empower communities.</p>
+                <button class="read-more-btn" data-blog="development">Read More</button>
+            </article>
+        </section>
+    </main>
+
+    <div class="blog-modal" id="blogModal">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalBody"></p>
+        </div>
+    </div>
+        </section>
+    </main>
+
+    <!-- Donation Modal -->
+    <div class="donation-modal" id="donationModal">
+        <div class="donation-content">
+            <span class="close-donation" id="closeDonation">&times;</span>
+
+            <h2>Make a Donation</h2>
+            <p>Your support helps uplift communities through education, health, and development.</p>
+
+            <label>Full Name</label>
+            <input type="text" id="donorName" class="donation-input" placeholder="Enter your name" />
+
+            <label>Email Address</label>
+            <input type="email" id="donorEmail" class="donation-input" placeholder="Enter your email" />
+
+            <label>Choose Donation Amount</label>
+            <div class="amount-options">
+                <button class="amt" data-value="5">$5</button>
+                <button class="amt" data-value="10">$10</button>
+                <button class="amt" data-value="20">$20</button>
+                <button class="amt" data-value="50">$50</button>
+            </div>
+
+            <input type="number" id="customAmount" class="donation-input" placeholder="Or enter custom amount" />
+
+            <label>Select Payment Method</label>
+            <select id="paymentMethod" class="donation-input">
+                <option value="">Choose payment method</option>
+                <option value="MTN Mobile Money">MTN Mobile Money</option>
+                <option value="Airtel Money">Airtel Money</option>
+                <option value="Visa / Mastercard">Visa / Mastercard</option>
+                <option value="PayPal">PayPal</option>
+            </select>
+
+            <button class="donate-submit" id="submitDonation">Proceed to Payment</button>
+
+            <p class="success-msg" id="successMsg" style="display:none;">Thank you! Your donation details have been submitted.</p>
+        </div>
+    </div>
+
     <footer class="footer">
-        <p>© 2025 ishema Foundation — All Rights Reserved</p>
+        <p>© 2025 Ishema Foundation — All Rights Reserved</p>
     </footer>
-    
+
     <script>
+        // Mobile menu toggle
         const navBar = document.querySelector(".navbar");
-        document.getElementById("menu").onclick = () => {
-            navBar.classList.add("nav-open");
+
+        document.getElementById("menu").onclick = () => navBar.classList.add("nav-open");
+        document.getElementById("close").onclick = () => navBar.classList.remove("nav-open");
+
+        const blogContent = {
+            education: {
+                title: "Empowering Communities Through Education",
+                body: "Education is the foundation of growth. At Ishema Foundation, we provide access to quality education for children in underserved communities. We organize school programs, supply learning materials, train teachers, and provide scholarships. Our work has helped hundreds of children gain access to education and improve their future prospects."
+            },
+            health: {
+                title: "Health Programs Making a Difference",
+                body: "From medical camps to awareness programs, we improve healthcare access for underserved communities. Our initiatives focus on preventive care, maternal health, and community health education. We work with local health professionals to provide screenings, vaccinations, and health education to ensure communities stay healthy."
+            },
+            development: {
+                title: "Sustainable Development Projects",
+                body: "Our sustainable development projects empower communities to manage resources responsibly. This includes water management, sustainable farming, and environmental education. We help communities implement eco-friendly practices, develop renewable resources, and ensure long-term environmental sustainability while improving livelihoods and creating opportunities for economic growth."
+            }
         };
 
-        document.getElementById("close").onclick = () => {
-            navBar.classList.remove("nav-open");
+        // Open modal on Read More click
+        document.querySelectorAll(".read-more-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const blogKey = btn.getAttribute("data-blog");
+                document.getElementById("modalTitle").innerText = blogContent[blogKey].title;
+                document.getElementById("modalBody").innerText = blogContent[blogKey].body;
+                document.getElementById("blogModal").style.display = "block";
+            });
+        });
+
+        // Close modal
+        const modal = document.getElementById("blogModal");
+        const modalClose = document.getElementById("modalClose");
+
+        modalClose.onclick = () => modal.style.display = "none";
+        window.onclick = e => { if(e.target === modal) modal.style.display = "none"; }
+
+        const DonateBtn = document.querySelector(".btn-primary");
+        const donationModal = document.getElementById("donationModal");
+        const closeDonation = document.getElementById("closeDonation");
+        const amountButtons = document.querySelectorAll(".amt");
+        const customAmount = document.getElementById("customAmount");
+        const submitDonation = document.getElementById("submitDonation");
+        const successMsg = document.getElementById("successMsg");
+
+        const donorName = document.getElementById("donorName");
+        const donorEmail = document.getElementById("donorEmail");
+        const paymentMethod = document.getElementById("paymentMethod");
+
+        DonateBtn.onclick = () => {
+            donationModal.style.display = "flex";
         };
+
+        closeDonation.onclick = () => {
+            donationModal.style.display = "none";
+        };
+
+        window.onclick = (e) => {
+            if (e.target === donationModal) {
+                donationModal.style.display = "none";
+            }
+        };
+
+        amountButtons.forEach(btn => {
+            btn.onclick = () => {
+                amountButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+
+                customAmount.value = btn.dataset.value;
+            };
+        });
+
+        submitDonation.onclick = () => {
+            let amount = customAmount.value;
+
+            const name = donorName.value.trim();
+            const email = donorEmail.value.trim();
+            const method = paymentMethod.value;
+
+            if (!name || !email || !amount || !method) {
+                alert("Please fill all fields before proceeding.");
+                return;
+            }
+
+            successMsg.style.display = "block";
+
+            console.log({
+                name,
+                email,
+                amount,
+                method
+            });
+
+            setTimeout(() => {
+                successMsg.style.display = "none";
+                donorName.value = "";
+                donorEmail.value = "";
+                paymentMethod.value = "";
+                customAmount.value = "";
+                amountButtons.forEach(b => b.classList.remove("active"));
+
+                donationModal.style.display = "none";
+            }, 2000);
+        };
+        
     </script>
+
 </body>
 </html>
