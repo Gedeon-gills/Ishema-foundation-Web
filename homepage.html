@@ -128,7 +128,7 @@
             navBar.classList.remove("nav-open");
         };
 
-        const DonateBtn = document.querySelector(".btn-primary");
+        const donateButtons = document.querySelectorAll(".btn-primary, .btn-dark");
         const donationModal = document.getElementById("donationModal");
         const closeDonation = document.getElementById("closeDonation");
         const amountButtons = document.querySelectorAll(".amt");
@@ -140,9 +140,11 @@
         const donorEmail = document.getElementById("donorEmail");
         const paymentMethod = document.getElementById("paymentMethod");
 
-        DonateBtn.onclick = () => {
-            donationModal.style.display = "flex";
-        };
+        donateButtons.forEach(btn => {
+            btn.onclick = () => {
+                donationModal.style.display = "flex";
+            };
+        });
 
         closeDonation.onclick = () => {
             donationModal.style.display = "none";
@@ -194,7 +196,7 @@
 
                 donationModal.style.display = "none";
             }, 2000);
-        }; 
+        };
     </script>
 </body>
 </html>

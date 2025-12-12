@@ -30,29 +30,42 @@
     </section>
 
     <!-- Campaigns Section -->
-    <section id="campaigns" class="campaigns">
+    <section id="campaigns" class="campaigns"> 
         <h2>Our Active Campaigns</h2>
         <div class="campaign-grid">
             <div class="campaign-item">
                 <img src="https://github.com/Gedeon-gills/Ishema-foundation-Web/blob/main/images/3205.jpg?raw=true" alt="Education Campaign">
                 <h3>Education for All</h3>
                 <p>Providing children in remote areas with access to quality education and learning resources.</p>
-                <a href="#" class="btn-small">Learn More</a>
+                <button class="btn-small read-more-btn" data-blog="education">Learn More</button>
             </div>
             <div class="campaign-item">
                 <img src="https://github.com/Gedeon-gills/Ishema-foundation-Web/blob/main/images/p0dx0cvt.png?raw=true" alt="Healthcare Campaign">
                 <h3>Healthcare Access</h3>
                 <p>Delivering medical aid and health education to underserved communities.</p>
-                <a href="#" class="btn-small">Learn More</a>
+                <button class="btn-small read-more-btn" data-blog="health">Learn More</button>
             </div>
             <div class="campaign-item">
                 <img src="https://github.com/Gedeon-gills/Ishema-foundation-Web/blob/main/images/1729578239573.png?raw=true" alt="Sustainable Development Campaign">
                 <h3>Sustainable Development</h3>
                 <p>Supporting projects that promote clean energy, clean water, and environmental sustainability.</p>
-                <a href="#" class="btn-small">Learn More</a>
+                <button class="btn-small read-more-btn" data-blog="development">Learn More</button>
             </div>
         </div>
     </section>
+
+    <!-- Blog Modal -->
+    <div id="blogModal" class="blog-modal">
+        <div class="blog-content">
+            <span id="modalClose" class="close-modal">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalBody"></p>
+            <div class=modal-btn>
+                <button class="btn-primary">Donate</button>
+                <button class="btn-secondary">Become a Volunteer </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Donation Modal -->
     <div class="donation-modal" id="donationModal">
@@ -108,73 +121,96 @@
             navBar.classList.remove("nav-open");
         };
 
-        const DonateBtn = document.querySelector(".btn-primary");
         const donationModal = document.getElementById("donationModal");
-        const closeDonation = document.getElementById("closeDonation");
-        const amountButtons = document.querySelectorAll(".amt");
-        const customAmount = document.getElementById("customAmount");
-        const submitDonation = document.getElementById("submitDonation");
-        const successMsg = document.getElementById("successMsg");
+const closeDonation = document.getElementById("closeDonation");
+const amountButtons = document.querySelectorAll(".amt");
+const customAmount = document.getElementById("customAmount");
+const submitDonation = document.getElementById("submitDonation");
+const successMsg = document.getElementById("successMsg");
 
-        const donorName = document.getElementById("donorName");
-        const donorEmail = document.getElementById("donorEmail");
-        const paymentMethod = document.getElementById("paymentMethod");
+const donorName = document.getElementById("donorName");
+const donorEmail = document.getElementById("donorEmail");
+const paymentMethod = document.getElementById("paymentMethod");
 
-        DonateBtn.onclick = () => {
+// Open modal: all .btn-primary outside modal
+document.querySelectorAll(".btn-primary").forEach(btn => {
+    btn.addEventListener("click", () => {
+        if (!donationModal.contains(btn)) { // Ignore buttons inside modal
             donationModal.style.display = "flex";
-        };
+        }
+    });
+});
 
-        closeDonation.onclick = () => {
-            donationModal.style.display = "none";
-        };
+// Close modal
+closeDonation.onclick = () => donationModal.style.display = "none";
+window.onclick = e => { if(e.target === donationModal) donationModal.style.display = "none"; }
 
-        window.onclick = (e) => {
-            if (e.target === donationModal) {
-                donationModal.style.display = "none";
+// Amount selection
+amountButtons.forEach(btn => {
+    btn.onclick = () => {
+        amountButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        customAmount.value = btn.dataset.value;
+    };
+});
+
+// Submit donation
+submitDonation.onclick = () => {
+    const amount = customAmount.value;
+    const name = donorName.value.trim();
+    const email = donorEmail.value.trim();
+    const method = paymentMethod.value;
+
+    if (!name || !email || !amount || !method) {
+        alert("Please fill all fields before proceeding.");
+        return;
+    }
+
+    successMsg.style.display = "block";
+    console.log({ name, email, amount, method });
+
+    setTimeout(() => {
+        successMsg.style.display = "none";
+        donorName.value = "";
+        donorEmail.value = "";
+        paymentMethod.value = "";
+        customAmount.value = "";
+        amountButtons.forEach(b => b.classList.remove("active"));
+        donationModal.style.display = "none";
+    }, 2000);
+};
+
+        const blogContent = { 
+            education: {
+                title: "Empowering Communities Through Education",
+                body: "Education is the foundation of growth. At Ishema Foundation, we provide access to quality education for children in underserved communities. We organize school programs, supply learning materials, train teachers, and provide scholarships. Our work has helped hundreds of children gain access to education and improve their future prospects."
+            },
+            health: {
+                title: "Health Programs Making a Difference",
+                body: "From medical camps to awareness programs, we improve healthcare access for underserved communities. Our initiatives focus on preventive care, maternal health, and community health education. We work with local health professionals to provide screenings, vaccinations, and health education to ensure communities stay healthy."
+            },
+            development: {
+                title: "Sustainable Development Projects",
+                body: "Our sustainable development projects empower communities to manage resources responsibly. This includes water management, sustainable farming, and environmental education. We help communities implement eco-friendly practices, develop renewable resources, and ensure long-term environmental sustainability while improving livelihoods and creating opportunities for economic growth."
             }
         };
 
-        amountButtons.forEach(btn => {
-            btn.onclick = () => {
-                amountButtons.forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-
-                customAmount.value = btn.dataset.value;
-            };
+        // Open modal on Learn More click
+        document.querySelectorAll(".read-more-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const blogKey = btn.getAttribute("data-blog");
+                document.getElementById("modalTitle").innerText = blogContent[blogKey].title;
+                document.getElementById("modalBody").innerText = blogContent[blogKey].body;
+                document.getElementById("blogModal").style.display = "flex";
+            });
         });
 
-        submitDonation.onclick = () => {
-            let amount = customAmount.value;
+        // Close modal
+        const modal = document.getElementById("blogModal");
+        const modalClose = document.getElementById("modalClose");
 
-            const name = donorName.value.trim();
-            const email = donorEmail.value.trim();
-            const method = paymentMethod.value;
-
-            if (!name || !email || !amount || !method) {
-                alert("Please fill all fields before proceeding.");
-                return;
-            }
-
-            successMsg.style.display = "block";
-
-            console.log({
-                name,
-                email,
-                amount,
-                method
-            });
-
-            setTimeout(() => {
-                successMsg.style.display = "none";
-                donorName.value = "";
-                donorEmail.value = "";
-                paymentMethod.value = "";
-                customAmount.value = "";
-                amountButtons.forEach(b => b.classList.remove("active"));
-
-                donationModal.style.display = "none";
-            }, 2000);
-        };
+        modalClose.onclick = () => modal.style.display = "none";
+        window.onclick = e => { if(e.target === modal) modal.style.display = "none"; }
     </script>
 </body>
 </html>
